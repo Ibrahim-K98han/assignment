@@ -14,15 +14,39 @@ void main() {
   print('7. Exit');
 
   stdout.write('\nEnter your choice: ');
-  int choice = int.parse(stdin.readLineSync()!);
+  int? choice = int.tryParse(stdin.readLineSync() ?? '');
+
+  if (choice == null || choice < 1 || choice > 7) {
+    print('Invalid input. Please try again.');
+    return;
+  }
 
   if (choice == 7) {
     print('Exiting...');
     return;
   }
 
-  stdout.write('\nEnter temperature: ');
-  double temp = double.parse(stdin.readLineSync()!);
+  String unitLabel;
+  switch (choice) {
+    case 1:
+    case 3:
+      unitLabel = 'Celsius';
+      break;
+    case 2:
+    case 5:
+      unitLabel = 'Fahrenheit';
+      break;
+    default:
+      unitLabel = 'Kelvin';
+  }
+
+  stdout.write('\nEnter temperature in $unitLabel: ');
+  double? temp = double.tryParse(stdin.readLineSync() ?? '');
+
+  if (temp == null) {
+    print('Invalid number. Please try again.');
+    return;
+  }
 
   switch (choice) {
     case 1:
@@ -43,8 +67,6 @@ void main() {
     case 6:
       print('${temp} K = ${kelvinToFahrenheit(temp)}°F');
       break;
-    default:
-      print('Invalid input. Please try again.');
   }
 }
 
